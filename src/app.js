@@ -21,7 +21,7 @@ app.use(async (ctx, next) => {
     await next();
   } catch (err) {
     // will only respond with JSON
-    ctx.status = err.statusCode || err.status || 500;
+    ctx.status = err.status || 500;
     ctx.body = {
       message: err.message
     };
@@ -38,7 +38,9 @@ router.get('/', (ctx) => {
 
 // use home router middleware routes
 app.use(router.routes())
-  .use(router.allowedMethods());
+  .use(router.allowedMethods({
+    throw: true,
+  }));
 
 app.use(async (ctx) => {
   ctx.body = { message: 'Route not found' };
